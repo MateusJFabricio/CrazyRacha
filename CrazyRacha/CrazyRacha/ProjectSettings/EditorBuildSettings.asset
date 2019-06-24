@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/CenaPista0.unity
+    guid: bdd0a84b565af0541beb7a6b7ebeb2d7
+  - enabled: 1
+    path: Assets/Scenes/CenaPista1.unity
+    guid: 54dd46a3d0b50394aaf03389c26a63c5
+  - enabled: 1
+    path: Assets/Scenes/CenaPista2.unity
+    guid: 46478303f7c601e4e8584cb7f8d31d7f
   m_configObjects: {}
