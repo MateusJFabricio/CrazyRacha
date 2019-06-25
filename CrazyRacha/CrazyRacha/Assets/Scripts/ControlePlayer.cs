@@ -12,10 +12,12 @@ public class ControlePlayer : MonoBehaviour
     public float velocidadeMax;
     private List<GameObject> pontoRetorno = new List<GameObject>();
     private ControleJogo controleJogo;
-   
+    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         controleJogo = GameObject.FindGameObjectWithTag("ControleGame").GetComponent<ControleJogo>();
         rb = GetComponent<Rigidbody>();
         ultimaPosicao = transform.localPosition;
@@ -32,11 +34,20 @@ public class ControlePlayer : MonoBehaviour
 
     void Update()
     {
-        verificar_angulo();
+        verificar_emPe();
+
+        
+        if ((rb.velocity.magnitude > 5))
+            animator.SetBool("Correndo", true);
+        else
+            animator.SetBool("Correndo", false);
+            
     }
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
+        animator.SetBool("Correndo", false);
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -56,7 +67,7 @@ public class ControlePlayer : MonoBehaviour
 
     void Desacelera()
     {
-        print("Velocidade: " + rb.velocity.magnitude);
+        //print("Velocidade: " + rb.velocity.magnitude);
         if (rb.velocity.magnitude > 1)
             rb.AddForce(transform.forward * -10);
     }
@@ -89,7 +100,7 @@ public class ControlePlayer : MonoBehaviour
     }
 
 
-    void verificar_angulo()
+    void verificar_emPe()
     {
         float x = transform.localRotation.eulerAngles.x;
         float z = transform.localRotation.eulerAngles.z;
@@ -117,8 +128,9 @@ public class ControlePlayer : MonoBehaviour
             Destroy(collision.gameObject);
         }
 
+        if (collision.gameObject.CompareTag("Inimigo"))
+            animator.SetBool("Correndo", true);
     }
-
     void OnCollisionStay(Collision collisionInfo)
     {
         if (collisionInfo.gameObject.CompareTag("Pista"))
@@ -129,7 +141,7 @@ public class ControlePlayer : MonoBehaviour
 
     IEnumerator UltimaPosicao()
     {
-        while(true)
+        while (true)
         {
             if (!noChao || !emPe)
             {
@@ -137,8 +149,6 @@ public class ControlePlayer : MonoBehaviour
                 if (!noChao || !emPe)
                 {
                     float menorPos = Vector3.Distance(pontoRetorno[0].transform.position, transform.position);
-                    Vector3 pos = new Vector3();
-                    Quaternion ang = new Quaternion();
                     float dist;
                     int index = 0;
                     for (int i = 0; i <= pontoRetorno.Count - 1; i++)

@@ -12,6 +12,7 @@ TagManager:
   - ControleGame
   - Text
   - Roda
+  - Inimigo
   layers:
   - Default
   - TransparentFX
